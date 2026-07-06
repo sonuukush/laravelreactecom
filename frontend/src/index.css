@@ -1,0 +1,85 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@theme {
+  --font-sans: 'Outfit', sans-serif;
+  
+  /* Primary HSL Tailored Brand Colors */
+  --color-primary-50: hsl(250, 100%, 97%);
+  --color-primary-100: hsl(250, 100%, 92%);
+  --color-primary-200: hsl(250, 100%, 84%);
+  --color-primary-500: hsl(250, 95%, 60%);
+  --color-primary-600: hsl(250, 90%, 52%);
+  --color-primary-700: hsl(250, 90%, 42%);
+  
+  /* Dark Premium Palette */
+  --color-dark-50: #1a1c26;
+  --color-dark-100: #11131c;
+  --color-dark-200: #0a0b12;
+  --color-dark-300: #05060a;
+}
+
+/* Base resets & utilities */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-dark-100);
+  color: #f3f4f6;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+/* Glassmorphism utility classes */
+.glass {
+  background: rgba(26, 28, 38, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-premium {
+  background: linear-gradient(135deg, rgba(30, 32, 48, 0.7) 0%, rgba(15, 17, 28, 0.8) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.15);
+  outline: none;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-dark-200);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Hide standard arrows on number inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}

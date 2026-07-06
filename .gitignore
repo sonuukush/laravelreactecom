@@ -1,0 +1,20 @@
+# Root Gitignore for E-commerce Project (Laravel + React)
+
+# Ignore backend vendor and env config
+/backend/vendor/
+/backend/.env
+/backend/storage/*.key
+/backend/public/storage
+/backend/database/*.sqlite
+
+# Ignore frontend node_modules and build outputs
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.env.local
+/frontend/.env.*.local
+
+# IDE & OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
