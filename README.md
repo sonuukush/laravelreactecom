@@ -77,6 +77,11 @@ graph TD
 * **Review Moderation Hub**: Approve or delete pending reviews before they show up on the storefront.
 * **Customer Block/Unblock List**: Active/blocked toggle to prevent malicious users from placing orders.
 
+### 6. AI-Powered Chatbot Assistant
+* **Database-Grounded Product Recommendation**: Uses Google Gemini's model to search database items and recommend relevant products, providing direct routing links (`/product/slug`) inside the SPA.
+* **Intelligent Customer Support**: Answers policies, FAQs, and helps authenticated users retrieve and track their live order statuses.
+* **Premium Floating Chat Widget**: Implemented with dynamic toggle animations, suggestion prompts, and glassmorphic aesthetics.
+
 ---
 
 ## 📂 Project Architecture
@@ -129,7 +134,7 @@ ecom/
    ```bash
    copy .env.example .env
    ```
-4. Open the new `.env` file and set your database credentials:
+4. Open the new `.env` file and set your database credentials & Gemini API Key:
    ```env
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
@@ -137,6 +142,8 @@ ecom/
    DB_DATABASE=ecom_db
    DB_USERNAME=root
    DB_PASSWORD=
+
+   GEMINI_API_KEY=your_google_gemini_api_key_here
    ```
 5. Run database migrations and seed the mock data:
    ```bash
