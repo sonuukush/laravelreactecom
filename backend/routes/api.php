@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ChatbotController;
 use Illuminate\Support\Facades\Route;
 
 // --- PUBLIC ROUTES ---
@@ -20,6 +21,7 @@ Route::get('/brands', [ProductController::class, 'brands']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/featured', [ProductController::class, 'getFeatured']);
 Route::get('/products/{slug}', [ProductController::class, 'show']);
+Route::post('/chatbot/message', [ChatbotController::class, 'handleChat']);
 
 // Cart (Guest / Direct)
 Route::get('/cart', [CartController::class, 'getCart']);
