@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Sphere E-Book: Laravel + React Full Stack & Gemini AI Integration</title>
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-  <!-- Prism.js for syntax highlighting (Monokai-like dark theme) -->
+  <title>E-Sphere E-Book: Advanced Laravel + React SPA & Gemini AI Chatbot Architecture</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- PrismJS syntax highlighting -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
   
   <style>
     :root {
       --primary: #8b5cf6;
-      --primary-hover: #7c3aed;
+      --primary-glow: rgba(139, 92, 246, 0.15);
       --secondary: #10b981;
-      --dark-100: #0f172a;
-      --dark-200: #1e293b;
-      --dark-300: #334155;
-      --light-text: #f8fafc;
-      --gray-text: #94a3b8;
-      --border: rgba(255, 255, 255, 0.08);
+      --secondary-glow: rgba(16, 185, 129, 0.15);
+      --bg-main: #0b0f19;
+      --bg-sidebar: #0f1423;
+      --bg-card: #151c30;
+      --border: rgba(255, 255, 255, 0.06);
+      --text-main: #cbd5e1;
+      --text-white: #ffffff;
+      --text-gray: #64748b;
     }
 
     * {
@@ -30,173 +34,326 @@
 
     body {
       font-family: 'Outfit', sans-serif;
-      background-color: var(--dark-100);
-      color: var(--light-text);
-      line-height: 1.6;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.7;
       display: flex;
+      scroll-behavior: smooth;
     }
 
-    /* Sidebar Navigation */
+    /* Left Sidebar Navigation */
     .sidebar {
-      width: 280px;
+      width: 320px;
       height: 100vh;
-      background-color: var(--dark-200);
+      background-color: var(--bg-sidebar);
       border-right: 1px solid var(--border);
       position: fixed;
       top: 0;
       left: 0;
       overflow-y: auto;
-      padding: 2rem 1.5rem;
+      padding: 2.5rem 1.75rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 2rem;
+      z-index: 100;
     }
 
-    .sidebar h2 {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--light-text);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
+    .sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+
+    .sidebar-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
+
+    .sidebar-logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #a78bfa 0%, #34d399 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-gray);
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .sidebar ul {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .sidebar a {
-      color: var(--gray-text);
+      color: var(--text-gray);
       text-decoration: none;
       font-size: 0.95rem;
-      font-weight: 400;
-      padding: 0.5rem 0.75rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      display: block;
+      font-weight: 500;
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid transparent;
     }
 
     .sidebar a:hover {
-      color: var(--light-text);
-      background-color: rgba(255, 255, 255, 0.05);
-      padding-left: 1rem;
+      color: var(--text-white);
+      background-color: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.03);
+      padding-left: 1.25rem;
     }
 
     .sidebar a.active {
-      color: var(--light-text);
-      background-color: var(--primary);
+      color: var(--text-white);
+      background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+      box-shadow: 0 4px 15px var(--primary-glow);
       font-weight: 600;
     }
 
-    /* Main Content Area */
-    .content-wrapper {
-      margin-left: 280px;
-      padding: 3rem 4rem;
-      max-width: 1000px;
-      width: calc(100% - 280px);
+    /* Main Content Wrapper */
+    .content-container {
+      margin-left: 320px;
+      padding: 4rem 6rem;
+      max-width: 1100px;
+      width: calc(100% - 320px);
     }
 
-    header.book-header {
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 2rem;
-      margin-bottom: 3rem;
+    /* E-Book Title/Cover Page Style */
+    .cover-container {
+      background: linear-gradient(135deg, rgba(21, 28, 48, 0.6) 0%, rgba(11, 15, 25, 0.9) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 4rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
 
-    .book-title {
-      font-size: 2.75rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #a78bfa 0%, #34d399 100%);
+    .cover-container::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+      filter: blur(50px);
+      z-index: 0;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: #a78bfa;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cover-title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      color: var(--text-white);
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #8b5cf6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
     }
 
-    .book-subtitle {
-      font-size: 1.25rem;
-      color: var(--gray-text);
-      font-weight: 300;
-    }
-
-    /* Typography & Layout elements */
-    h1, h2, h3, h4 {
-      color: #ffffff;
+    .cover-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
       margin-top: 2rem;
-      margin-bottom: 1rem;
-      font-weight: 700;
+      z-index: 1;
+      position: relative;
+    }
+
+    .meta-item h5 {
+      color: var(--text-gray);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-item p {
+      color: var(--text-white);
+      font-weight: 500;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Visual Components & Sections */
+    section {
+      margin-bottom: 6rem;
     }
 
     h1 {
       font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--text-white);
       border-bottom: 2px solid var(--primary);
-      padding-bottom: 0.5rem;
+      padding-bottom: 0.75rem;
       margin-top: 4rem;
+      margin-bottom: 2rem;
+      letter-spacing: -0.75px;
       page-break-before: always;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
     h2 {
-      font-size: 1.65rem;
-      color: var(--primary);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.25rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1.25rem;
+      background: var(--primary);
+      border-radius: 2px;
     }
 
     h3 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
+      font-weight: 600;
       color: var(--secondary);
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
     }
 
     p {
-      margin-bottom: 1.2rem;
+      color: var(--text-main);
       font-size: 1.05rem;
-      color: #cbd5e1;
+      margin-bottom: 1.5rem;
       text-align: justify;
     }
 
     ul, ol {
       margin-left: 2rem;
-      margin-bottom: 1.5rem;
-      color: #cbd5e1;
+      margin-bottom: 1.75rem;
+      color: var(--text-main);
     }
 
     li {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
+      font-size: 1rem;
     }
 
-    /* Highlight box */
-    .note-box {
-      background: rgba(139, 92, 246, 0.05);
-      border-left: 4px solid var(--primary);
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin: 1.5rem 0;
+    /* Embedded SVG Diagram Styling */
+    .diagram-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 2.5rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
-    .note-box p {
-      margin: 0;
-      color: #e2e8f0;
+    .diagram-caption {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-gray);
+      margin-top: -1.5rem;
+      margin-bottom: 2rem;
       font-style: italic;
     }
 
-    /* Code Blocks */
+    /* Note and Alert boxes */
+    .alert-box {
+      background: rgba(139, 92, 246, 0.04);
+      border-left: 4px solid var(--primary);
+      padding: 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 2rem 0;
+    }
+
+    .alert-box p {
+      margin: 0;
+      color: var(--text-white);
+      font-size: 1rem;
+    }
+
+    .alert-box.success {
+      background: rgba(16, 185, 129, 0.04);
+      border-left-color: var(--secondary);
+    }
+
+    /* Code blocks container */
     pre[class*="language-"] {
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      margin: 1.5rem 0 !important;
-      max-height: 500px;
+      border-radius: 14px;
+      border: 1px solid var(--border) !important;
+      margin: 2rem 0 !important;
+      background: #0d1117 !important;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     }
 
-    code {
+    code[class*="language-"] {
       font-family: 'Fira Code', monospace !important;
-      font-size: 0.9rem !important;
+      font-size: 0.875rem !important;
     }
 
-    /* Print styling rules */
+    /* File Link tags */
+    .file-tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      color: #f472b6;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s ease;
+    }
+
+    .file-tag:hover {
+      background: rgba(244, 114, 182, 0.1);
+      border-color: #f472b6;
+    }
+
+    /* Print settings override */
     @media print {
       body {
         background-color: #ffffff;
@@ -206,332 +363,577 @@
       .sidebar {
         display: none;
       }
-      .content-wrapper {
+      .content-container {
         margin-left: 0;
         padding: 0;
         width: 100%;
       }
-      h1, h2, h3, h4, p, li {
+      h1, h2, h3, h4, p, li, td, th {
         color: #000000 !important;
       }
       h1 {
-        page-break-before: always;
         border-bottom: 2px solid #000000;
+      }
+      .cover-container {
+        border: 2px solid #000000;
+        background: #ffffff;
+        box-shadow: none;
+        color: #000000;
+      }
+      .cover-title {
+        background: none;
+        -webkit-text-fill-color: initial;
+        color: #000000 !important;
+      }
+      .diagram-container {
+        border: 1px solid #000000;
+        background-color: #ffffff;
+        box-shadow: none;
+      }
+      .diagram-container svg text {
+        fill: #000000 !important;
+      }
+      .diagram-container svg rect, .diagram-container svg circle {
+        stroke: #000000 !important;
+        fill: #f1f5f9 !important;
+      }
+      .diagram-container svg path {
+        stroke: #000000 !important;
       }
       pre[class*="language-"] {
         border: 1px solid #000000 !important;
-        background-color: #f8fafc !important;
+        background: #f8fafc !important;
+        box-shadow: none !important;
         page-break-inside: avoid;
       }
-      .note-box {
+      .alert-box {
+        border: 1px solid #000000;
         border-left: 4px solid #000000;
-        background: #f1f5f9;
+        background: #f8fafc;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar Navigation -->
+  <!-- Left Sidebar Menu -->
   <aside class="sidebar">
-    <div>
-      <h2>E-Sphere E-Book</h2>
-      <p style="font-size: 0.85rem; color: var(--gray-text); margin-top: 0.25rem;">Laravel + React & Gemini AI</p>
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+          <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+        E-Sphere Book
+      </div>
+      <div class="sidebar-subtitle">Developer Handbook</div>
     </div>
     <nav>
       <ul>
-        <li><a href="#intro" class="active">Introduction</a></li>
-        <li><a href="#ch1">1. Architecture Design</a></li>
-        <li><a href="#ch2">2. Backend: Laravel REST API</a></li>
-        <li><a href="#ch3">3. Frontend: React Vite SPA</a></li>
-        <li><a href="#ch4">4. AI Chatbot Integration</a></li>
-        <li><a href="#ch5">5. Database Schema & Models</a></li>
-        <li><a href="#ch6">6. Full Project Setup & Run</a></li>
-        <li><a href="#print-instructions" style="color: var(--secondary); font-weight: 600;">🖨 Save as PDF Book</a></li>
+        <li><a href="#cover" class="active">Title & Cover Page</a></li>
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#ch1">1. Decoupled Architecture</a></li>
+        <li><a href="#ch2">2. Backend Database & REST API</a></li>
+        <li><a href="#ch3">3. Frontend State & Interceptors</a></li>
+        <li><a href="#ch4">4. AI Chatbot Integration Flow</a></li>
+        <li><a href="#ch5">5. Database Schema Relations</a></li>
+        <li><a href="#ch6">6. Comprehensive Setup Guide</a></li>
+        <li><a href="#save-pdf" style="color: var(--secondary); margin-top: 1.5rem; font-weight: 700; border: 1px dashed var(--secondary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+          Convert to PDF Book
+        </a></li>
       </ul>
     </nav>
   </aside>
 
-  <!-- Content Container -->
-  <main class="content-wrapper">
-    <header class="book-header" id="intro">
-      <h1 class="book-title">E-Sphere E-Book</h1>
-      <p class="book-subtitle">Building a Headless Decoupled E-commerce Platform with Laravel 11, React (Vite), and Gemini 2.5 Flash AI Chatbot Integration</p>
+  <!-- Content Pane -->
+  <main class="content-container">
+
+    <!-- BOOK COVER PAGE -->
+    <header class="cover-container" id="cover">
+      <div class="cover-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+          <polyline points="2 17 12 22 22 17"/>
+          <polyline points="2 12 12 17 22 12"/>
+        </svg>
+        Official Technical E-Book
+      </div>
+      <h1 class="cover-title">Building E-Sphere</h1>
+      <p style="font-size: 1.35rem; color: #cbd5e1; margin-bottom: 2rem; font-weight: 300;">
+        A Headless Decoupled E-commerce Blueprint utilizing Laravel 11 REST API, React SPA (Vite) styled with Tailwind CSS v4, and Google Gemini 2.5 Flash AI Chatbot Integration.
+      </p>
+      <div class="cover-meta">
+        <div class="meta-item">
+          <h5>Author</h5>
+          <p>Antigravity Developer Assistant</p>
+        </div>
+        <div class="meta-item">
+          <h5>Published For</h5>
+          <p>sonuukush / laravelreactecom</p>
+        </div>
+        <div class="meta-item">
+          <h5>Framework Version</h5>
+          <p>Laravel 11 & React 19 (Vite)</p>
+        </div>
+        <div class="meta-item">
+          <h5>AI Core Engine</h5>
+          <p>Google Gemini 2.5 Flash API</p>
+        </div>
+      </div>
     </header>
 
-    <section>
-      <h2>Introduction</h2>
-      <p>Modern e-commerce requires lightning-fast loading speeds, modular architecture, and intelligent systems that help visitors buy. The E-Sphere project implements these requirements by combining Laravel 11 as a backend REST API database driver, ReactJS (Vite) as a single-page frontend application, and Google's Gemini 2.5 Flash API as an integrated AI Shopping assistant.</p>
-      <p>This handbook walks through the complete codebase implementation, highlighting design decisions, database architectures, state management patterns, and step-by-step instructions to recreate, scale, or deploy this e-commerce platform.</p>
-      <div class="note-box">
-        <p><strong>Note:</strong> You can convert this page into a beautiful PDF E-Book directly in your browser. Just click on <strong>Save as PDF Book</strong> in the sidebar, or press <strong>Ctrl + P</strong>, select <strong>Save as PDF</strong> as the destination, and enable background graphics.</p>
+    <!-- INTRO -->
+    <section id="intro">
+      <h1>Introduction & Concept</h1>
+      <p>
+        In modern web development, monolithic models are increasingly replaced by <strong>decoupled headless architectures</strong>. In this design paradigm, the data storage logic (Backend) is separated from the UI presentation layer (Frontend). The E-Sphere project implements a robust template of this modern stack.
+      </p>
+      <p>
+        By routing the backend on <strong>Laravel 11</strong> and the frontend as a single-page application (SPA) on <strong>React (Vite)</strong>, E-Sphere balances fast speeds with high-grade security. 
+      </p>
+      <p>
+        This book serves as a developer blueprint. It outlines the architecture, explains database mappings, details Redux state and token interceptor patterns, and breaks down the core AI chatbot architecture powered by <strong>Google Gemini 2.5 Flash</strong>.
+      </p>
+      <div class="alert-box success">
+        <p><strong>🖨 Tip for Printing:</strong> For a perfect book aesthetic, print this file from your browser by checking the <strong>"Background graphics"</strong> option in your browser print settings. A white theme will automatically apply for optimal paper printing, or you can print a dark-themed PDF for digital distribution.</p>
       </div>
     </section>
 
-    <!-- CHAPTER 1 -->
+    <!-- CHAPTER 1: ARCHITECTURE -->
     <section id="ch1">
-      <h1>1. Architecture & Design Patterns</h1>
-      <p>E-Sphere is designed as a decoupled headless architecture. This means the frontend and backend are completely separate projects that communicate exclusively over secure HTTP API routes using JSON payloads.</p>
-      
-      <h3>Headless Architecture Advantage</h3>
+      <h1>1. The Core System Architecture</h1>
+      <p>
+        The interaction between the React user interface and the Laravel server database works on a strictly stateless HTTP communication cycle. When a user requests data, the React client initiates an Axios API call to the Laravel server. Laravel queries the MySQL database and feeds the response back as a JSON payload.
+      </p>
+
+      <h2>A. Client-Server Interaction Flow</h2>
+      <p>
+        Here is the visual mapping of the system's communication channels, showing how the frontend acts as the presenter and Laravel coordinates database caching and Gemini API calls securely:
+      </p>
+
+      <div class="diagram-container">
+        <!-- SVG System Architecture Diagram -->
+        <svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background grids for layout design -->
+          <rect width="100%" height="100%" fill="none"/>
+          
+          <!-- Nodes -->
+          <rect x="20" y="90" width="160" height="90" rx="12" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/>
+          <text x="100" y="135" font-family="'Outfit', sans-serif" font-size="16" fill="#ffffff" font-weight="600" text-anchor="middle">React SPA</text>
+          <text x="100" y="160" font-family="'Outfit', sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Frontend (Port 5173)</text>
+          
+          <rect x="310" y="90" width="180" height="90" rx="12" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+          <text x="400" y="135" font-family="'Outfit', sans-serif" font-size="16" fill="#ffffff" font-weight="600" text-anchor="middle">Laravel REST API</text>
+          <text x="400" y="160" font-family="'Outfit', sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Backend Server (Port 8000)</text>
+
+          <rect x="620" y="20" width="160" height="90" rx="12" fill="#1e293b" stroke="#e11d48" stroke-width="2"/>
+          <text x="700" y="65" font-family="'Outfit', sans-serif" font-size="15" fill="#ffffff" font-weight="600" text-anchor="middle">Gemini 2.5 Flash</text>
+          <text x="700" y="90" font-family="'Outfit', sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Google AI Services</text>
+
+          <rect x="620" y="160" width="160" height="90" rx="12" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+          <text x="700" y="205" font-family="'Outfit', sans-serif" font-size="16" fill="#ffffff" font-weight="600" text-anchor="middle">MySQL DB</text>
+          <text x="700" y="230" font-family="'Outfit', sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Database (Port 3307)</text>
+
+          <!-- Arrows -->
+          <!-- React <-> Laravel -->
+          <path d="M180 120 L310 120" stroke="#8b5cf6" stroke-width="2" fill="none" marker-end="url(#arrow-purple)"/>
+          <path d="M310 150 L180 150" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+          
+          <text x="245" y="112" font-family="'Outfit', sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">JSON Requests</text>
+          <text x="245" y="172" font-family="'Outfit', sans-serif" font-size="10" fill="#34d399" text-anchor="middle">JSON Responses</text>
+
+          <!-- Laravel <-> Gemini -->
+          <path d="M490 110 L620 65" stroke="#10b981" stroke-width="2" fill="none" />
+          <text x="555" y="75" font-family="'Outfit', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle" transform="rotate(-15, 555, 75)">Secure API</text>
+
+          <!-- Laravel <-> Database -->
+          <path d="M490 155 L620 200" stroke="#10b981" stroke-width="2" fill="none" />
+          <text x="555" y="195" font-family="'Outfit', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle" transform="rotate(15, 555, 195)">Eloquent Queries</text>
+          
+          <!-- Definitions for Markers -->
+          <defs>
+            <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#8b5cf6"/>
+            </marker>
+            <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#10b981"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+      <div class="diagram-caption">Figure 1.1: E-Sphere Headless Server System Workflow Diagram.</div>
+
+      <h2>B. Security and CORS (Cross-Origin Resource Sharing)</h2>
+      <p>
+        Because the frontend (React SPA) and backend (Laravel REST API) run on completely separate servers (usually on separate ports), CORS rules must be configured in Laravel to allow Vite origins. Laravel 11 handles this internally inside the <code>config/cors.php</code> configuration to allow cross-origin requests:
+      </p>
       <ul>
-        <li><strong>Independent Scaling:</strong> The React frontend can be served via a CDN (like Vercel or Netlify) at minimal cost, while the Laravel API can be hosted on a cloud instance scaling dynamically.</li>
-        <li><strong>Developer Specialization:</strong> Frontend developers can work exclusively with Vite, Tailwind CSS, and React, while backend developers focus on migrations, database queries, and business logic.</li>
-        <li><strong>Enhanced Security:</strong> By using Sanctum authentication tokens and routing all AI processing through Laravel, the frontend never exposes internal database schemas or secret third-party API credentials (like the Google Gemini API Key).</li>
+        <li><code>paths</code> set to target <code>['api/*', 'sanctum/csrf-cookie']</code>.</li>
+        <li><code>allowed_methods</code> set to allow <code>['*']</code>.</li>
+        <li><code>allowed_origins</code> matches the local Vite host <code>['http://localhost:5173']</code>.</li>
+        <li><code>supports_credentials</code> is set to <code>true</code>.</li>
       </ul>
-
-      <h3>Cross-Origin Resource Sharing (CORS)</h3>
-      <p>Because the React SPA runs on a different port (typically <code>localhost:5173</code>) than the Laravel REST server (typically <code>localhost:8000</code>), CORS headers are set up in Laravel's configuration to accept, process, and return credentials (tokens, cookies) from the React origins.</p>
     </section>
 
-    <!-- CHAPTER 2 -->
+    <!-- CHAPTER 2: BACKEND -->
     <section id="ch2">
-      <h1>2. Backend: Laravel REST API</h1>
-      <p>The backend of E-Sphere uses Laravel 11, running on PHP 8.2+. It provides secure endpoints for catalogs, carts, orders, and checkout validations.</p>
+      <h1>2. Backend Database & REST API</h1>
+      <p>
+        The backend serves as a secure data source. Built on Laravel 11, it houses custom models, Eloquent relations, and controllers that perform CRUD processes and route requests.
+      </p>
 
-      <h2>A. Routing Architecture</h2>
-      <p>Routes are defined in the <code>routes/api.php</code> file. All routes in this file automatically receive the <code>/api</code> prefix and run stateless sessions via Sanctum middleware.</p>
-      <pre><code class="language-php">// routes/api.php
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\ChatbotController;
+      <h2>A. Eloquent Database Models</h2>
+      <p>
+        Here is how the core <a class="file-tag" href="file:///c:/xampp/htdocs/ecom/backend/app/Models/Product.php">Product.php</a> model is implemented. Note the use of casts to convert SQL fields to structured PHP types automatically:
+      </p>
 
-// Public Endpoints
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{slug}', [ProductController::class, 'show']);
-Route::post('/chatbot/message', [ChatbotController::class, 'handleChat']);
+      <pre><code class="language-php">&lt;?php
 
-// Authenticated Customer Endpoints
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/profile', [AuthController::class, 'profile']);
-    Route::get('/orders', [OrderController::class, 'index']);
-    Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder']);
-});</code></pre>
+namespace App\Models;
 
-      <h2>B. Cart Merging Logic</h2>
-      <p>A key user experience feature of E-Sphere is Cart Syncing. When a guest visitor browses the site, their cart is stored in their browser's LocalStorage. Once they register or log in, React sends this local cart to the Laravel backend. Laravel merges these temporary guest items with the customer's permanent database cart, verifying warehouse inventory dynamically.</p>
-    </section>
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-    <!-- CHAPTER 3 -->
-    <section id="ch3">
-      <h1>3. Frontend: React Vite SPA</h1>
-      <p>The frontend is a single-page application built on Vite and React 19. It uses Redux Toolkit for global state management and Tailwind CSS for a premium dark-theme UI.</p>
-
-      <h2>A. HTTP Request Wrapper</h2>
-      <p>To communicate with the backend, React uses a centralized Axios client that intercepts every request to attach the Sanctum bearer token and track guest session tokens.</p>
-      <pre><code class="language-javascript">// frontend/src/utils/api.js
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
-});
-
-// Request interceptor to attach authentication token
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    
-    // Add guest token if available
-    let guestToken = localStorage.getItem('guest_token');
-    if (!guestToken) {
-      guestToken = Math.random().toString(36).substring(2, 15);
-      localStorage.setItem('guest_token', guestToken);
-    }
-    config.headers['X-Guest-Token'] = guestToken;
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-export default api;</code></pre>
-
-      <h2>B. Theme Styles & Layouts</h2>
-      <p>The styling is built on a dark, glassmorphic layout. The base design variables are defined in <code>src/index.css</code> using custom theme properties, creating glowing borders, semi-transparent panels, and rich typography.</p>
-    </section>
-
-    <!-- CHAPTER 4 -->
-    <section id="ch4">
-      <h1>4. AI Chatbot Integration</h1>
-      <p>The AI Chatbot integration connects the React client with the Gemini 2.5 Flash API securely through Laravel, allowing for dynamic recommendations and live customer support.</p>
-
-      <h2>A. Laravel Controller Logic</h2>
-      <p>The <code>ChatbotController</code> takes care of compiling local database knowledge (products catalog & user order history) and injecting it as context into Gemini's system instructions. This ensures that the AI answers accurately without fabricating products or orders.</p>
-      <pre><code class="language-php">// backend/app/Http/Controllers/Api/ChatbotController.php
-namespace App\Http\Controllers\Api;
-
-use App\Http\Controllers\Controller;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-
-class ChatbotController extends Controller
+class Product extends Model
 {
-    public function handleChat(Request $request)
+    use HasFactory;
+
+    protected $fillable = [
+        'category_id', 'brand_id', 'name', 'slug', 'description', 
+        'specifications', 'price', 'discount_price', 'stock', 
+        'sku', 'is_featured', 'is_active', 'rating'
+    ];
+
+    protected $casts = [
+        'specifications' => 'array',
+        'is_featured' => 'boolean',
+        'is_active' => 'boolean',
+        'price' => 'decimal:2',
+        'discount_price' => 'decimal:2',
+        'rating' => 'decimal:2',
+    ];
+
+    public function category()
     {
-        $message = $request->input('message');
-        $history = $request->input('history', []);
+        return $this->belongsTo(Category::class);
+    }
 
-        // 1. Fetch active products for catalog context
-        $products = Product::where('is_active', true)
-            ->select('id', 'name', 'slug', 'price', 'discount_price', 'rating', 'stock')
-            ->limit(80)->get();
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 
-        $catalogContext = "Product Catalog:\n";
-        foreach ($products as $p) {
-            $price = $p->discount_price ?? $p->price;
-            $catalogContext .= "- **{$p->name}** | Slug: `{$p->slug}` | Price: ₹{$price} | Stock: {$p->stock}\n";
-        }
-
-        // 2. Fetch authenticated user details (if logged in)
-        $user = $request->user('sanctum');
-        $userContext = $user ? "User: {$user->name}. Orders:\n" : "Guest User.\n";
-        if ($user) {
-            foreach ($user->orders()->latest()->limit(3)->get() as $order) {
-                $userContext .= "- Order #{$order->order_number} | Status: {$order->status} | Total: ₹{$order->total}\n";
-            }
-        }
-
-        // 3. System Instructions
-        $systemInstructions = "You are a shopping assistant. Speak in Hinglish or English. Recommend products from catalog. Format links as: [Product Name](/product/slug). Do not make up products. Context:\n" . $catalogContext . "\n" . $userContext;
-
-        // 4. API Request Payload mapping
-        $contents = [];
-        foreach ($history as $msg) {
-            $contents[] = [
-                'role' => $msg['sender'] === 'user' ? 'user' : 'model',
-                'parts' => [['text' => $msg['text']]]
-            ];
-        }
-        $contents[] = ['role' => 'user', 'parts' => [['text' => $message]]];
-
-        // 5. Query Google Gemini API
-        $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" . env('GEMINI_API_KEY'), [
-            'contents' => $contents,
-            'systemInstruction' => ['parts' => [['text' => $systemInstructions]]]
-        ]);
-
-        return response()->json(['reply' => $response->json()['candidates'][0]['content']['parts'][0]['text']]);
+    public function reviews()
+    {
+        return $this->hasMany(Review::class)->where('is_approved', true);
     }
 }</code></pre>
 
-      <h2>B. React Chat Widget & Route Parser</h2>
-      <p>The frontend chatbot component parses markdown links dynamically and maps them to SPA routes using React Router, keeping transitions seamless.</p>
-      <pre><code class="language-javascript">// Inside Chatbot.jsx - relative link routing
-const renderMessageContent = (text) => {
-  const parts = [];
-  const regex = /(\*\*.*?\*\*|\[.*?\]\(.*?\))/g;
-  let match;
-  let lastIndex = 0;
+      <h2>B. Cart Merging Database Logic</h2>
+      <p>
+        In many legacy platforms, if a guest user logs in, their previous shopping selections are wiped. In E-Sphere, a custom backend routine in <a class="file-tag" href="file:///c:/xampp/htdocs/ecom/backend/app/Http/Controllers/Api/CartController.php">CartController.php</a> intercepts logins. It loops through the guest's browser cart token contents, checks if the items already exist in the logged-in customer's database row, combines the quantities, and updates the SQL database.
+      </p>
+    </section>
 
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(text.substring(lastIndex, match.index));
-    }
-    const token = match[0];
-    if (token.startsWith('**')) {
-      parts.push(&lt;strong className="font-bold text-white"&gt;{token.slice(2, -2)}&lt;/strong&gt;);
-    } else if (token.startsWith('[')) {
-      const closingBracket = token.indexOf(']');
-      const linkText = token.slice(1, closingBracket);
-      const url = token.slice(closingBracket + 2, -1);
-      
-      if (url.startsWith('/')) {
-        parts.push(&lt;Link to={url} className="text-primary-300 underline"&gt;{linkText}&lt;/Link&gt;);
-      } else {
-        parts.push(&lt;a href={url} target="_blank" className="text-primary-300 underline"&gt;{linkText}&lt;/a&gt;);
-      }
-    }
-    lastIndex = regex.lastIndex;
+    <!-- CHAPTER 3: FRONTEND -->
+    <section id="ch3">
+      <h1>3. Frontend State & Interceptors</h1>
+      <p>
+        React handles user interactions. All pages dynamically load inside the React Router DOM single-page lifecycle, calling APIs behind the scenes without ever triggering browser page refreshes.
+      </p>
+
+      <h2>A. Global Redux State (Cart Slice)</h2>
+      <p>
+        Redux manages cart item states in real-time, refreshing badge counts in the header on every mutation:
+      </p>
+      <pre><code class="language-javascript">// frontend/src/store/cartSlice.js
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../utils/api';
+
+export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
+  const response = await api.get('/cart');
+  return response.data;
+});
+
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState: { items: [], loading: false, totalAmount: 0 },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCart.fulfilled, (state, action) => {
+        state.items = action.payload.items;
+        state.totalAmount = action.payload.total;
+        state.loading = false;
+      });
   }
-  return parts;
-};</code></pre>
+});
+
+export default cartSlice.reducer;</code></pre>
+
+      <h2>B. Token-based Session Interceptor</h2>
+      <p>
+        The frontend requests database assets through <a class="file-tag" href="file:///c:/xampp/htdocs/ecom/frontend/src/utils/api.js">api.js</a>. If the user logs in, the authentication token generated by Laravel Sanctum is stored in the browser's <code>localStorage</code> and automatically appended to the <code>Authorization: Bearer &lt;Token&gt;</code> headers on all subsequent REST calls.
+      </p>
     </section>
 
-    <!-- CHAPTER 5 -->
+    <!-- CHAPTER 4: AI CHATBOT -->
+    <section id="ch4">
+      <h1>4. AI Chatbot Integration Flow</h1>
+      <p>
+        The AI integration leverages the Google Gemini 2.5 Flash LLM, using context injection to merge live database content with LLM processing. This provides users with a conversational assistant that understands the store's inventory and order tracking details in real time.
+      </p>
+
+      <h2>A. Chatbot Execution Lifecycle</h2>
+      <p>
+        Here is the visual diagram tracking a user's question from their browser, through the Laravel middleware validation steps, down to Gemini API, and back:
+      </p>
+
+      <div class="diagram-container">
+        <!-- SVG Chatbot execution lifecycle diagram -->
+        <svg width="850" height="280" viewBox="0 0 850 280" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="none"/>
+          
+          <!-- Blocks -->
+          <!-- User UI -->
+          <rect x="10" y="90" width="130" height="80" rx="10" fill="#151c30" stroke="#8b5cf6" stroke-width="2"/>
+          <text x="75" y="130" font-family="'Outfit', sans-serif" font-size="13" fill="#ffffff" font-weight="600" text-anchor="middle">1. User Type</text>
+          <text x="75" y="150" font-family="'Outfit', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">React Chat widget</text>
+
+          <!-- Laravel API Handler -->
+          <rect x="180" y="90" width="140" height="80" rx="10" fill="#151c30" stroke="#10b981" stroke-width="2"/>
+          <text x="250" y="130" font-family="'Outfit', sans-serif" font-size="13" fill="#ffffff" font-weight="600" text-anchor="middle">2. Laravel Route</text>
+          <text x="250" y="150" font-family="'Outfit', sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">ChatbotController@handleChat</text>
+
+          <!-- DB Grounding Fetch -->
+          <rect x="360" y="90" width="140" height="80" rx="10" fill="#151c30" stroke="#3b82f6" stroke-width="2"/>
+          <text x="430" y="130" font-family="'Outfit', sans-serif" font-size="13" fill="#ffffff" font-weight="600" text-anchor="middle">3. Data Fetch</text>
+          <text x="430" y="150" font-family="'Outfit', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Products & Orders DB</text>
+
+          <!-- Gemini Request -->
+          <rect x="540" y="90" width="140" height="80" rx="10" fill="#151c30" stroke="#e11d48" stroke-width="2"/>
+          <text x="610" y="130" font-family="'Outfit', sans-serif" font-size="13" fill="#ffffff" font-weight="600" text-anchor="middle">4. API Query</text>
+          <text x="610" y="150" font-family="'Outfit', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Gemini 2.5 Flash</text>
+
+          <!-- Link Parser -->
+          <rect x="710" y="90" width="130" height="80" rx="10" fill="#151c30" stroke="#d97706" stroke-width="2"/>
+          <text x="775" y="130" font-family="'Outfit', sans-serif" font-size="13" fill="#ffffff" font-weight="600" text-anchor="middle">5. Link Parser</text>
+          <text x="775" y="150" font-family="'Outfit', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">React Router Link</text>
+
+          <!-- Connective lines -->
+          <path d="M140 130 L180 130" stroke="#8b5cf6" stroke-width="2" fill="none" marker-end="url(#arrow-small)"/>
+          <path d="M320 130 L360 130" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow-small)"/>
+          <path d="M500 130 L540 130" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow-small)"/>
+          <path d="M680 130 L710 130" stroke="#e11d48" stroke-width="2" fill="none" marker-end="url(#arrow-small)"/>
+
+          <defs>
+            <marker id="arrow-small" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L6,3 z" fill="#cbd5e1"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+      <div class="diagram-caption">Figure 4.1: Chatbot Context Grounding Execution Lifecycle.</div>
+
+      <h2>B. Secure Database Grounding (Avoiding Fake Recommendations)</h2>
+      <p>
+        In <a class="file-tag" href="file:///c:/xampp/htdocs/ecom/backend/app/Http/Controllers/Api/ChatbotController.php">ChatbotController.php</a>, we query active database catalog products and the user's order history. By structuring the prompt with this data, we anchor the LLM, forcing it to recommend actual inventory and refer to actual orders:
+      </p>
+      
+      <pre><code class="language-php">// Prompt Context Grounding logic snippet
+$products = Product::where('is_active', true)
+    ->select('id', 'name', 'slug', 'price', 'discount_price', 'rating', 'stock')
+    ->limit(80)->get();
+
+$catalogContext = "";
+foreach ($products as $p) {
+    $catalogContext .= "- **{$p->name}** | Slug: {$p->slug} | Price: ₹{$p->price}\n";
+}
+
+// User context order injection (Only if user has active Sanctum Session)
+$user = $request->user('sanctum');
+$userContext = $user ? "Orders for {$user->name}: " . $user->orders()->latest()->limit(5)->get()->toJson() : "Guest User";</code></pre>
+
+      <h2>C. Routing Link Parser (SPA Navigation Helper)</h2>
+      <p>
+        In React, if the AI outputs a standard markdown link <code>[My Product](/product/slug)</code>, normal rendering would use an anchor tag <code>&lt;a href="..."&gt;</code>. This would trigger a full page reload, breaking the SPA flow. 
+      </p>
+      <p>
+        E-Sphere fixes this by including a custom rendering function in <a class="file-tag" href="file:///c:/xampp/htdocs/ecom/frontend/src/components/Chatbot.jsx">Chatbot.jsx</a>. This function matches markdown links, checks if they start with a relative path (e.g. <code>/product</code>), and swaps them for React Router's <code>&lt;Link&gt;</code> tags.
+      </p>
+    </section>
+
+    <!-- CHAPTER 5: SCHEMA -->
     <section id="ch5">
-      <h1>5. Database Schema & Relationships</h1>
-      <p>The structural relational integrity of the e-commerce database is handled through migrations in Laravel, creating strong connections between users, products, orders, and reviews.</p>
+      <h1>5. Database Schema & Relations</h1>
+      <p>
+        E-Sphere runs on MySQL on port <code>3307</code>. The database tables are defined using Laravel database migrations.
+      </p>
 
-      <h2>Database Schema Diagram</h2>
+      <h2>A. Table Mappings & Key Relationships</h2>
       <ul>
-        <li><strong>Users (1) ➔ Addresses (N):</strong> Users can save multiple shipping/billing addresses.</li>
-        <li><strong>Users (1) ➔ Orders (N):</strong> Customers can place multiple orders over time.</li>
-        <li><strong>Orders (1) ➔ OrderItems (N) ➔ Products (1):</strong> Links orders to concrete catalog items, keeping records of purchase prices at checkout.</li>
-        <li><strong>Products (1) ➔ Reviews (N):</strong> Holds approved client ratings and comments.</li>
+        <li><strong><code>users</code>:</strong> Holds user details, passwords (hashed), and profile icons.</li>
+        <li><strong><code>categories</code> & <code>brands</code>:</strong> Organized hierarchically. Categories support parent-child relationships (e.g., Electronics ➔ Mobiles).</li>
+        <li><strong><code>products</code>:</strong> Holds items. Linked to <code>category_id</code> and <code>brand_id</code>. Holds stock counts.</li>
+        <li><strong><code>orders</code>:</strong> Linked to <code>user_id</code> and <code>address_id</code>. Contains totals, shipping charges, and tracking states (e.g., pending, processing, shipped, delivered).</li>
+        <li><strong><code>order_items</code>:</strong> Relational pivot table linking <code>order_id</code> and <code>product_id</code>. Records historical product pricing at checkout to protect sales ledger data.</li>
       </ul>
+
+      <h2>B. DB Schema Flowchart Diagram</h2>
+      <div class="diagram-container">
+        <!-- SVG DB Schema Relation Diagram -->
+        <svg width="800" height="240" viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="none"/>
+          
+          <!-- Nodes -->
+          <!-- USERS -->
+          <rect x="20" y="20" width="130" height="90" rx="8" fill="#151c30" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="85" y="45" font-family="'Outfit', sans-serif" font-size="14" fill="#ffffff" font-weight="600" text-anchor="middle">users</text>
+          <line x1="20" y1="55" x2="150" y2="55" stroke="rgba(255,255,255,0.08)"/>
+          <text x="30" y="75" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">id (PK)</text>
+          <text x="30" y="90" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">email</text>
+
+          <!-- ADDRESSES -->
+          <rect x="20" y="130" width="130" height="90" rx="8" fill="#151c30" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="85" y="155" font-family="'Outfit', sans-serif" font-size="14" fill="#ffffff" font-weight="600" text-anchor="middle">addresses</text>
+          <line x1="20" y1="165" x2="150" y2="165" stroke="rgba(255,255,255,0.08)"/>
+          <text x="30" y="185" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">id (PK)</text>
+          <text x="30" y="200" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">user_id (FK)</text>
+
+          <!-- ORDERS -->
+          <rect x="280" y="20" width="140" height="105" rx="8" fill="#151c30" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="350" y="45" font-family="'Outfit', sans-serif" font-size="14" fill="#ffffff" font-weight="600" text-anchor="middle">orders</text>
+          <line x1="280" y1="55" x2="420" y2="55" stroke="rgba(255,255,255,0.08)"/>
+          <text x="290" y="75" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">id (PK)</text>
+          <text x="290" y="90" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">user_id (FK)</text>
+          <text x="290" y="105" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">address_id (FK)</text>
+
+          <!-- ORDER ITEMS -->
+          <rect x="540" y="20" width="140" height="105" rx="8" fill="#151c30" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="610" y="45" font-family="'Outfit', sans-serif" font-size="14" fill="#ffffff" font-weight="600" text-anchor="middle">order_items</text>
+          <line x1="540" y1="55" x2="680" y2="55" stroke="rgba(255,255,255,0.08)"/>
+          <text x="550" y="75" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">id (PK)</text>
+          <text x="550" y="90" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">order_id (FK)</text>
+          <text x="550" y="105" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">product_id (FK)</text>
+
+          <!-- PRODUCTS -->
+          <rect x="540" y="140" width="140" height="90" rx="8" fill="#151c30" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="610" y="165" font-family="'Outfit', sans-serif" font-size="14" fill="#ffffff" font-weight="600" text-anchor="middle">products</text>
+          <line x1="540" y1="175" x2="680" y2="175" stroke="rgba(255,255,255,0.08)"/>
+          <text x="550" y="195" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">id (PK)</text>
+          <text x="550" y="210" font-family="'Fira Code', monospace" font-size="9" fill="#94a3b8">slug (Unique)</text>
+
+          <!-- Relations Mapping Lines -->
+          <!-- User ➔ Addresses -->
+          <path d="M85 110 L85 130" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3,3" />
+          
+          <!-- User ➔ Orders -->
+          <path d="M150 65 L280 65" stroke="#cbd5e1" stroke-width="1.5"/>
+          
+          <!-- Orders ➔ OrderItems -->
+          <path d="M420 65 L540 65" stroke="#cbd5e1" stroke-width="1.5"/>
+
+          <!-- OrderItems ➔ Products -->
+          <path d="M610 125 L610 140" stroke="#cbd5e1" stroke-width="1.5"/>
+
+          <!-- Labels on arrows -->
+          <text x="215" y="58" font-family="'Outfit', sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">1 to Many</text>
+          <text x="480" y="58" font-family="'Outfit', sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">1 to Many</text>
+        </svg>
+      </div>
+      <div class="diagram-caption">Figure 5.1: Database Entity Relationship Diagram.</div>
     </section>
 
-    <!-- CHAPTER 6 -->
+    <!-- CHAPTER 6: SETUP -->
     <section id="ch6">
-      <h1>6. Full Project Setup & Run</h1>
-      <p>To run the website on any environment (such as a newly cloned system), execute these installation and startup steps:</p>
+      <h1>6. Comprehensive Setup Guide</h1>
+      <p>
+        To clone, build, configure environment values, and run the E-Sphere platform, run the following processes sequentially.
+      </p>
 
-      <h2>A. Clone & Backend Setup</h2>
+      <h2>A. Clone & Backend Environment Setup</h2>
       <pre><code class="language-bash"># Clone repository
 git clone https://github.com/sonuukush/laravelreactecom.git
 cd laravelreactecom/backend
 
-# Install PHP dependencies
+# Install package dependencies
 composer install
 
-# Setup env variables
-copy .env.example .env
+# Duplicate environmental placeholder
+copy .env.example .env</code></pre>
 
-# Configure .env with your DB connection details and Gemini Key:
-# DB_CONNECTION=mysql
-# DB_PORT=3307
-# DB_DATABASE=ecom_db
-# GEMINI_API_KEY=your_key_here
+      <p>
+        Open the newly created <code>.env</code> file. Configure the database connector variables (note that the local MySQL instance runs on port <code>3307</code> by default). Additionally, add your Google Gemini API Key:
+      </p>
 
-# Generate APP Key
+      <pre><code class="language-env">DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3307
+DB_DATABASE=ecom_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+GEMINI_API_KEY=your_google_gemini_api_key_here</code></pre>
+
+      <h2>B. Database Migration and Seeding</h2>
+      <p>
+        With the configuration complete, generate the security key and seed mock database records:
+      </p>
+      <pre><code class="language-bash"># Generate security App Key
 php artisan key:generate
 
-# Migrate database & seed mock store items
+# Build database schema tables and seed catalogs
 php artisan migrate --seed
 
-# Create filesystem storage link
+# Create storage link for dynamic images
 php artisan storage:link
 
-# Start backend server
+# Spin up backend server
 php artisan serve</code></pre>
 
-      <h2>B. Frontend Setup</h2>
+      <h2>C. Frontend Installation and Run</h2>
+      <p>
+        Open a new command line prompt, navigate to the frontend directory, install JavaScript dependencies, and run the Vite server:
+      </p>
       <pre><code class="language-bash">cd ../frontend
 
 # Install node dependencies
 npm install
 
-# Start Vite dev server
+# Run the dev server
 npm run dev</code></pre>
+      <p>
+        Vite will build local modules and boot the storefront at <strong><code>http://localhost:5173</code></strong>. The chatbot will be visible as a floating circle in the bottom right corner.
+      </p>
     </section>
 
-    <!-- PDF Instructions -->
-    <section id="print-instructions" style="margin-top: 5rem; border-top: 1px solid var(--border); padding-top: 3rem; margin-bottom: 5rem;">
-      <h2 style="color: var(--secondary);">🖨 How to Save this Page as a Beautiful PDF Book</h2>
-      <p>Aap is pure HTML web-page ko 2 seconds me ek real PDF book me convert kar sakte hain:</p>
-      <ol style="margin-left: 2rem; margin-top: 1rem; margin-bottom: 2rem; font-size: 1.05rem;">
-        <li>Apne computer par <strong>Ctrl + P</strong> (Windows) ya <strong>Cmd + P</strong> (Mac) press karein.</li>
-        <li>Print dialog open hone par <strong>Destination</strong> option me <strong>"Save as PDF"</strong> (ya Microsoft Print to PDF) choose karein.</li>
-        <li><strong>More settings</strong> drop-down par click karein.</li>
-        <li><strong>"Background graphics"</strong> checkbox ko select (enable) karein taaki dark background aur code colors maintain rahein.</li>
-        <li>Marging ko <strong>"Default"</strong> ya <strong>"None"</strong> choose karein, aur <strong>Save</strong> button par click kar dein.</li>
+    <!-- PDF PRINT INSTRUCTIONS -->
+    <section id="save-pdf" style="margin-top: 6rem; border-top: 1px solid var(--border); padding-top: 4rem; margin-bottom: 6rem;">
+      <h2 style="color: var(--secondary);">How to Save this E-Book as a PDF</h2>
+      <p>
+        Aap is dynamic handbook ko print karke ek premium format me hard copy ya local PDF book bana sakte hain. Niche diye gaye steps follow karein:
+      </p>
+      <ol style="margin-left: 2rem; margin-top: 1rem; margin-bottom: 2rem;">
+        <li>Apne system par <strong>Ctrl + P</strong> (Windows) ya <strong>Cmd + P</strong> (Mac) press karein.</li>
+        <li>Destination selection option me <strong>"Save as PDF"</strong> select karein.</li>
+        <li><strong>More settings</strong> section ko expand karein.</li>
+        <li><strong>"Background graphics"</strong> option ke check-box ko select/enable karein taaki diagrams aur code syntax highlights print me clean dikhein.</li>
+        <li><strong>Save</strong> par click karein aur file download kar lein!</li>
       </ol>
-      <p>Aapka high-quality, fully formatted PDF ready ho jayega!</p>
     </section>
   </main>
 
-  <!-- PrismJS Script for Syntax highlighting -->
+  <!-- PrismJS libraries for highlighting -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
-  <!-- Dynamic active sidebar link highlighting -->
+  <!-- Navigation Active Highlighting Handler -->
   <script>
     const links = document.querySelectorAll('.sidebar a');
     const sections = document.querySelectorAll('section, header');
@@ -541,7 +943,7 @@ npm run dev</code></pre>
       sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-        if (pageYOffset >= (sectionTop - 200)) {
+        if (pageYOffset >= (sectionTop - 220)) {
           current = section.getAttribute('id');
         }
       });
@@ -554,8 +956,8 @@ npm run dev</code></pre>
       });
     });
 
-    // Special trigger for printing
-    document.querySelector('a[href="#print-instructions"]').addEventListener('click', (e) => {
+    // Handle smooth print trigger
+    document.querySelector('a[href="#save-pdf"]').addEventListener('click', (e) => {
       e.preventDefault();
       window.print();
     });
